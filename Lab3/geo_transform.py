@@ -14,8 +14,7 @@ image = cv2.imread("road.jpg")
 image = cv2.resize(image, None, fx=0.5, fy=0.5)
 
 cv2.namedWindow("image")
-var = {"a": "b"}
-cv2.setMouseCallback("image", on_mouse, param=var)
+cv2.setMouseCallback("image", on_mouse)
 
 while True:
     cv2.imshow("image", image)
