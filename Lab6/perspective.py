@@ -15,7 +15,7 @@ image_thresh = cv2.morphologyEx(
 contours, hierarchy = cv2.findContours(
     image_thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE
 )
-cv2.drawContours(image, contours, -1, (0, 255, 0), cv2.FILLED)
+# cv2.drawContours(image, contours, -1, (0, 255, 0), cv2.FILLED)
 
 centers = []
 for cnt in contours:
