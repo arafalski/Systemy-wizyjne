@@ -1,14 +1,15 @@
 import cv2
+import numpy as np
 
 image = cv2.imread("lenna.png")
 template = cv2.imread("lenna_template.png")
 w, h = template.shape[1], template.shape[0]
 
-res = cv2.matchTemplate(image, template, cv2.TM_CCOEFF)
-min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(res)
-top_left = max_loc
-bottom_right = (top_left[0] + w, top_left[1] + h)
-cv2.rectangle(image, top_left, bottom_right, (0, 0, 255), 3)
+res = cv2.matchTemplate(image, template, cv2.TM_CCOEFF_NORMED)
+threshold = 0.9
+loc = np.where(res >= threshold)
+for pt in zip(*loc[::-1]):
+    cv2.rectangle(image, pt, (pt[0] + w, pt[1] + h), (0, 0, 255), 2)
 
 cv2.imshow("image", image)
 cv2.imshow("template", template)
