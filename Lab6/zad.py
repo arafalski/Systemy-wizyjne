@@ -1,4 +1,5 @@
 import cv2
+import numpy as np
 
 image = cv2.imread("not_bad.jpg")
 
@@ -25,7 +26,14 @@ for cnt in contours:
 
     centers.append((cx, cy))
 
+width = 700
+height = int(width * np.sqrt(2))
+trans_matrix = cv2.getPerspectiveTransform(
+    np.float32(centers), np.float32([(height, width), (0, width), (height, 0), (0, 0)])
+)
+image_persp = cv2.warpPerspective(image, trans_matrix, (height, width))
+
 cv2.imshow("image", cv2.resize(image, None, fx=0.3, fy=0.3))
-cv2.imshow("thresh", cv2.resize(image_thresh, None, fx=0.3, fy=0.3))
+cv2.imshow("persp", image_persp)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
