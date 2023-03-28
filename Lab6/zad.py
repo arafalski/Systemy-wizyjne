@@ -16,6 +16,15 @@ contours, hierarchy = cv2.findContours(
 )
 cv2.drawContours(image, contours, -1, (0, 255, 0), cv2.FILLED)
 
+centers = []
+for cnt in contours:
+    M = cv2.moments(cnt)
+
+    cx = int(M["m10"] / M["m00"])
+    cy = int(M["m01"] / M["m00"])
+
+    centers.append((cx, cy))
+
 cv2.imshow("image", cv2.resize(image, None, fx=0.3, fy=0.3))
 cv2.imshow("thresh", cv2.resize(image_thresh, None, fx=0.3, fy=0.3))
 cv2.waitKey(0)
