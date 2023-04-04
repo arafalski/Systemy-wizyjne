@@ -40,8 +40,9 @@ while True:
 
     cv2.imshow(foreground_window, foreground_image)
 
-    background_image[background_image < current_image] += 1
-    background_image[background_image > current_image] -= 1
+    last_background_image = background_image.copy()
+    background_image[last_background_image < current_image] += 1
+    background_image[last_background_image > current_image] -= 1
 
     key_pressed = cv2.waitKey(1)
     if key_pressed == ord("q"):
