@@ -1,7 +1,7 @@
 import cv2
 
-image1 = cv2.imread("images/forward-1.bmp")
-image2 = cv2.imread("images/forward-2.bmp")
+image1 = cv2.imread("images/rotate-1.bmp")
+image2 = cv2.imread("images/rotate-6.bmp")
 
 orb = cv2.ORB_create()
 
