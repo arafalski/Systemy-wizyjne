@@ -35,7 +35,7 @@ while True:
         matches = bf.match(desc_cut, desc_image)
 
         matches = sorted(matches, key=lambda x: x.distance)
-        matches = matches[:20]
+        matches = matches[:30]
 
         src_pts = np.float32([kp_cut[m.queryIdx].pt for m in matches]).reshape(-1, 1, 2)
         dst_pts = np.float32([kp_image[m.trainIdx].pt for m in matches]).reshape(
@@ -43,7 +43,7 @@ while True:
         )
 
         M, mask = cv2.findHomography(src_pts, dst_pts, cv2.RANSAC)
-        matches_mask = mask.ravel().tolist()
+        matches_mask = mask.ravel()
 
         h, w = image_cut.shape[:2]
         pts = np.float32([[0, 0], [0, h - 1], [w - 1, h - 1], [w - 1, 0]]).reshape(
@@ -51,10 +51,10 @@ while True:
         )
         dst = cv2.perspectiveTransform(pts, M)
         image_to_match = cv2.polylines(
-            image_to_match, [np.int32(dst)], True, 255, 3, cv2.LINE_AA
+            image_to_match, [np.int32(dst)], True, (255, 0, 0), 3, cv2.LINE_AA
         )
 
-        draw_params = dict(
+        inliers_params = dict(
             matchColor=(0, 255, 0),
             singlePointColor=None,
             matchesMask=matches_mask,
@@ -62,13 +62,7 @@ while True:
         )
 
         image_matches = cv2.drawMatches(
-            image_cut,
-            kp_cut,
-            image_to_match,
-            kp_image,
-            matches,
-            None,
-            **draw_params
+            image_cut, kp_cut, image_to_match, kp_image, matches, None, **inliers_params
         )
 
         cv2.imshow("matches", image_matches)
