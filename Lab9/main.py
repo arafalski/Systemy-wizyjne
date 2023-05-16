@@ -13,6 +13,8 @@ def mouse_callback(event, x, y, flags, param):
 image_to_find = cv2.imread("objects_to_find.jpg")
 image_to_find = cv2.resize(image_to_find, None, fx=0.25, fy=0.25)
 
+sift = cv2.SIFT_create()
+
 cv2.namedWindow("image ori")
 cv2.setMouseCallback("image ori", mouse_callback)
 
@@ -23,7 +25,10 @@ while True:
 
     if len(selected_points) == 4:
         x, y, w, h = cv2.boundingRect(np.array(selected_points))
-        cv2.imshow("image cut", image_to_find[y:y + h, x:x + w])
+        image_cut = image_to_find[y:y + h, x:x + w]
+        keypoints = sift.detect(image_cut)
+        cv2.drawKeypoints(image_cut, keypoints, image_cut)
+        cv2.imshow("image cut", image_cut)
         selected_points.clear()
 
     if cv2.waitKey(1) == ord("q"):
